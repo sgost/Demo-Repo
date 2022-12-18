@@ -124,7 +124,7 @@ const EditItemModal = () => {
                         <MenuItem value="NA">NA</MenuItem>
                     </Select>
                 </FormControl>
-                <Stack spacing={2} direction="row" sx={{ mx: 12, my: 2 }}>
+                <Stack spacing={2} direction="row" sx={{ width: 'fit-content', margin: 'auto' }}>
                     <Button variant="contained" color="error" onClick={modalCloseFun}>
                         Cancel
                     </Button>

@@ -13,11 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import {
-    useNavigate
-} from "react-router-dom";
-import { setAlertObj } from "../../redux/counterSlice";
-import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 const pages = ['Products', 'Pricing'];
 const settings = ['Logout'];
@@ -25,7 +21,6 @@ const settings = ['Logout'];
 function AppBarCompo({ userData }) {
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const [userMenu, setUserMenu] = useState(false);
 
@@ -33,13 +28,10 @@ function AppBarCompo({ userData }) {
         setUserMenu(!userMenu);
     };
 
+    // Check userLogin
     useEffect(() => {
-        if (userData) {
-            dispatch(setAlertObj({
-                alertOpen: true,
-                alertType: "Success",
-                alertMessage: `Hello ${userData?.fullName}`
-            }))
+        if (!userData) {
+            logoutFun();
         }
         // eslint-disable-next-line
     }, []);
@@ -49,6 +41,7 @@ function AppBarCompo({ userData }) {
         navigate("/");
         sessionStorage.removeItem("userData");
     }
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">

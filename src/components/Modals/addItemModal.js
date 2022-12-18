@@ -121,11 +121,11 @@ const AddItemModal = () => {
                             <MenuItem value="Female">Female</MenuItem>
                         </Select>
                     </FormControl>
-                    <Stack spacing={2} direction="row" sx={{ mx: 12, my: 2 }}>
+                    <Stack spacing={2} direction="row" sx={{ width: 'fit-content', margin: 'auto' }}>
                         <Button variant="contained" color="error" onClick={() => dispatch(setAddItemModalOpen({ bool: false }))}>
                             Cancel
                         </Button>
-                        <Button variant="contained" onClick={() => addItmFun(addItemObj)} disabled={addItemObj["name" && "gender" && "gender"] === ""}>Add Item</Button>
+                        <Button variant="contained" onClick={() => addItmFun(addItemObj)} disabled={addItemObj["name" && "gender" && "gender"] === ''}>Add Item</Button>
                     </Stack>
                 </Box>
             </Modal>

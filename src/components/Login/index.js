@@ -3,11 +3,15 @@ import { initializeApp } from "firebase/app"
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Typography } from "@mui/material";
 import GoogleIcon from '@mui/icons-material/Google';
+import { useDispatch } from 'react-redux';
+import { setAlertObj } from "../../redux/counterSlice";
+import AlertCompo from "../Alert";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 
 const Login = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const signInWithGoogle = () => {
         const firebaseConfig = {
@@ -29,6 +33,11 @@ const Login = () => {
         signInWithPopup(auth, provider)
             .then(result => {
                 if (result?._tokenResponse.emailVerified) {
+                    dispatch(setAlertObj({
+                        alertOpen: true,
+                        alertType: "success",
+                        alertMessage: `Hello ${result?._tokenResponse.displayName}`
+                    }))
                     typeof sessionStorage !== `undefined` &&
                         sessionStorage.setItem("userData", JSON.stringify(result._tokenResponse))
                     navigate("/Products");
@@ -62,6 +71,8 @@ const Login = () => {
             <Button variant="contained" onClick={signInWithGoogle} startIcon={<GoogleIcon />}>
                 Login With Google
             </Button>
+            {/* Alert modal */}
+            <AlertCompo />
         </Container>
     )
 }
