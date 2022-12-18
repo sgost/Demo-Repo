@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  appBarShow: false,
   apiMock: [],
   speciesType: [],
   searchSpiciesType: "",
@@ -14,6 +15,9 @@ export const counterSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
+    setAppBarShow: (state, action) => {
+      state.appBarShow = action.payload.bool;
+    },
     // TO save inital mock API data
     setApiMock: (state, action) => {
       state.apiMock = action.payload.mockData;
@@ -43,6 +47,7 @@ export const counterSlice = createSlice({
       const obj = {
         open: action.payload.bool,
         index: action.payload.index,
+        id: action.payload.row.id,
         name: action.payload.row.name,
         gender: action.payload.row.gender,
         species: action.payload.row.species
@@ -53,6 +58,6 @@ export const counterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setApiMock, setSearchSpiciesType, setAddItemModalOpen, setRemoveItemModalObj, setAlertObj, setEditDataObj } = counterSlice.actions;
+export const { setAppBarShow, setApiMock, setSearchSpiciesType, setAddItemModalOpen, setRemoveItemModalObj, setAlertObj, setEditDataObj } = counterSlice.actions;
 
 export default counterSlice.reducer;

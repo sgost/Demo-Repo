@@ -12,7 +12,8 @@ import {
     Select,
 } from "@mui/material";
 import { useSelector, useDispatch } from 'react-redux';
-import { setApiMock, setEditDataObj, setAlertObj } from "../../redux/counterSlice";
+import { setEditDataObj } from "../../redux/counterSlice";
+import { editMockFun } from "../Functions/functions";
 
 const EditItemModal = () => {
     const mockRedux = useSelector((state) => state.counter);
@@ -37,26 +38,6 @@ const EditItemModal = () => {
             index: "",
             row: ""
         }))
-    }
-
-    const editMockFun = () => {
-        let copy = [...mockRedux.apiMock];
-        copy[mockRedux.editDataObj?.index] = {
-            ...copy[mockRedux.editDataObj?.index],
-            "name": editObj?.name || mockRedux.editDataObj?.name,
-            "species": editObj?.species || mockRedux.editDataObj?.species,
-            "gender": editObj?.gender || mockRedux.editDataObj?.gender
-        }
-        dispatch(setApiMock({
-            mockData: copy
-        }));
-        dispatch(setAlertObj({
-            alertOpen: true,
-            alertType: "success",
-            alertMessage: "Edited successfully"
-        }))
-        modalCloseFun()
-        console.log("copy", copy)
     }
 
     return (
@@ -128,7 +109,11 @@ const EditItemModal = () => {
                     <Button variant="contained" color="error" onClick={modalCloseFun}>
                         Cancel
                     </Button>
-                    <Button variant="contained" onClick={() => editMockFun()}>Edit Item</Button>
+                    <Button variant="contained" onClick={() => editMockFun({
+                        mockRedux: mockRedux,
+                        editObj: editObj,
+                        modalCloseFun: () => modalCloseFun()
+                    })}>Edit Item</Button>
                 </Stack>
             </Box>
         </Modal>

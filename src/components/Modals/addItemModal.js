@@ -12,8 +12,9 @@ import {
     Select,
 } from "@mui/material";
 import { useSelector, useDispatch } from 'react-redux';
-import { setApiMock, setAddItemModalOpen, setAlertObj } from "../../redux/counterSlice";
+import { setAddItemModalOpen } from "../../redux/counterSlice";
 import AlertCompo from "../Alert";
+import { addItmFun } from "../Functions/functions";
 
 const AddItemModal = () => {
     const mockRedux = useSelector((state) => state.counter);
@@ -30,8 +31,9 @@ const AddItemModal = () => {
         p: 4,
     };
 
+    const copy = [...mockRedux.apiMock];
     const [addItemObj, setAddItemObj] = useState({
-        "id": Math.random(),
+        "id": copy.length,
         "mass": "",
         "name": "",
         "gender": "",
@@ -43,18 +45,6 @@ const AddItemModal = () => {
         "hair_color": "ss",
         "skin_color": "ss"
     });
-
-    const addItmFun = (addItemObj) => {
-        const copy = [...mockRedux.apiMock];
-        copy.push(addItemObj);
-        dispatch(setApiMock({ mockData: copy }));
-        dispatch(setAddItemModalOpen({ bool: false }));
-        dispatch(setAlertObj({
-            alertOpen: true,
-            alertType: 'success',
-            alertMessage: 'This is a success message!'
-        }))
-    }
 
     return (
         <Fragment>
@@ -125,7 +115,7 @@ const AddItemModal = () => {
                         <Button variant="contained" color="error" onClick={() => dispatch(setAddItemModalOpen({ bool: false }))}>
                             Cancel
                         </Button>
-                        <Button variant="contained" onClick={() => addItmFun(addItemObj)} disabled={addItemObj["name" && "gender" && "gender"] === ''}>Add Item</Button>
+                        <Button variant="contained" onClick={() => addItmFun(addItemObj)} disabled={addItemObj["name" && "gender" && "gender"] === ""}>Add Item</Button>
                     </Stack>
                 </Box>
             </Modal>

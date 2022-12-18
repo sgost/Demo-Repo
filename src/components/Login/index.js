@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { initializeApp } from "firebase/app"
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Typography } from "@mui/material";
@@ -8,10 +8,24 @@ import { setAlertObj } from "../../redux/counterSlice";
 import AlertCompo from "../Alert";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 
-const Login = () => {
+const LoginCompo = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+
+    // Fetching UserData from sessionStorage
+    const userData =
+        typeof sessionStorage !== "undefined" &&
+        JSON.parse(sessionStorage.getItem("userData"));
+
+
+    useEffect(() => {
+        if (userData) {
+            navigate("/Products");
+        }
+        // eslint-disable-next-line
+    }, [])
 
     const signInWithGoogle = () => {
         const firebaseConfig = {
@@ -37,7 +51,7 @@ const Login = () => {
                         alertOpen: true,
                         alertType: "success",
                         alertMessage: `Hello ${result?._tokenResponse.displayName}`
-                    }))
+                    }));
                     typeof sessionStorage !== `undefined` &&
                         sessionStorage.setItem("userData", JSON.stringify(result._tokenResponse))
                     navigate("/Products");
@@ -77,4 +91,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default LoginCompo;

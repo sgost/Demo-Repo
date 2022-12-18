@@ -2,7 +2,6 @@ import React, { useEffect, Fragment } from "react";
 import {
   Button,
   Box,
-  IconButton,
   Container,
   MenuItem,
   Table,
@@ -17,8 +16,6 @@ import {
   Select,
   Typography
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddItemModal from "../Modals/addItemModal";
 import EditItemModal from "../Modals/editItemModal";
 import DeleteItemModal from "../Modals/deleteItemModal";
@@ -26,15 +23,10 @@ import "./styles.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { reduxStateFun } from "../Functions/functions";
 import AlertCompo from "../Alert";
-import AppBarCompo from "../AppBar";
-import { setApiMock, setSearchSpiciesType, setAddItemModalOpen, setRemoveItemModalObj, setAlertObj, setEditDataObj } from "../../redux/counterSlice";
+import { setSearchSpiciesType, setAddItemModalOpen } from "../../redux/counterSlice";
 
 
 const Pricing = () => {
-  // Fetching UserData from sessionStorage
-  const userData =
-    typeof sessionStorage !== "undefined" &&
-    JSON.parse(sessionStorage.getItem("userData"));
   const mockRedux = useSelector((state) => state.counter);
   const dispatch = useDispatch();
 
@@ -43,31 +35,8 @@ const Pricing = () => {
     // eslint-disable-next-line
   }, [])
 
-  const removeItemRow = (row) => {
-    dispatch(setRemoveItemModalObj({ bool: true, selectedRow: row }));
-  }
-
-  const removeItem = () => {
-    dispatch(setApiMock({ mockData: mockRedux.apiMock.filter((item) => item.id !== mockRedux.removeItemModalObj.selectedRow.id) }));
-    dispatch(setRemoveItemModalObj({ bool: false, selectedRow: {} }));
-    dispatch(setAlertObj({
-      alertOpen: true,
-      alertType: 'success',
-      alertMessage: 'Item Removed!'
-    }))
-  }
-
-  const editDataFun = (row, index) => {
-    dispatch(setEditDataObj({
-      bool: true,
-      index: index,
-      row: row
-    }))
-  }
-
   return (
     <Fragment>
-      <AppBarCompo userData={userData} />
       <Container maxWidth="lg" sx={{ py: 10 }}>
         <Typography
           variant="h6"
@@ -120,7 +89,6 @@ const Pricing = () => {
                   <TableCell align="right">Gender</TableCell>
                   <TableCell align="right">Species</TableCell>
                   <TableCell align="right">Pricing</TableCell>
-                  <TableCell align="right">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -130,7 +98,7 @@ const Pricing = () => {
                     tempItm = item;
                   }
                   return tempItm;
-                }).map((row, index) => (
+                }).map((row) => (
                   <TableRow
                     key={row.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -141,14 +109,6 @@ const Pricing = () => {
                     <TableCell align="right">{row.gender}</TableCell>
                     <TableCell align="right">{row.species}</TableCell>
                     <TableCell align="right">$USD {row.mass}</TableCell>
-                    <TableCell align="right">
-                      <IconButton onClick={() => editDataFun(row, index)}>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton onClick={() => removeItemRow(row)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -158,7 +118,7 @@ const Pricing = () => {
       </Container>
       <AddItemModal />
       <EditItemModal />
-      <DeleteItemModal removeItem={() => removeItem()} />
+      <DeleteItemModal />
       {/* Alert modal */}
       <AlertCompo />
     </Fragment>

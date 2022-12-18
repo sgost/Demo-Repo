@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import { useSelector, useDispatch } from 'react-redux';
 import { setRemoveItemModalObj } from "../../redux/counterSlice";
+import { deleteItmFun } from "../Functions/functions";
 
-const DeleteItemModal = ({ removeItem }) => {
+const DeleteItemModal = () => {
     const mockRedux = useSelector((state) => state.counter);
     const dispatch = useDispatch();
     const style = {
@@ -38,7 +39,7 @@ const DeleteItemModal = ({ removeItem }) => {
                     <Button variant="contained" color="error" onClick={() => dispatch(setRemoveItemModalObj({ bool: false, selectedRow: {} }))}>
                         Cancel
                     </Button>
-                    <Button variant="contained" onClick={removeItem}>
+                    <Button variant="contained" onClick={() => deleteItmFun(mockRedux.removeItemModalObj.selectedRow.id)}>
                         Delete
                     </Button>
                 </Stack>

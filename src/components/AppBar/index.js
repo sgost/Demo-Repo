@@ -14,19 +14,22 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { useNavigate } from "react-router-dom";
+import { setAppBarShow } from "../../redux/counterSlice";
+import { useDispatch } from 'react-redux';
 
 const pages = ['Products', 'Pricing'];
 const settings = ['Logout'];
 
-function AppBarCompo({ userData }) {
-
-    const navigate = useNavigate();
+function AppBarCompo() {
 
     const [userMenu, setUserMenu] = useState(false);
+    // Fetching UserData from sessionStorage
+    const userData =
+        typeof sessionStorage !== "undefined" &&
+        JSON.parse(sessionStorage.getItem("userData"));
 
-    const handleOpenUserMenu = () => {
-        setUserMenu(!userMenu);
-    };
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // Check userLogin
     useEffect(() => {
@@ -39,6 +42,7 @@ function AppBarCompo({ userData }) {
     // Logout function
     const logoutFun = () => {
         navigate("/");
+        dispatch(setAppBarShow({ bool: false }));
         sessionStorage.removeItem("userData");
     }
 
@@ -90,8 +94,8 @@ function AppBarCompo({ userData }) {
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        <Tooltip title="Click To Logout">
+                            <IconButton onClick={() => setUserMenu(!userMenu)} sx={{ p: 0 }}>
                                 <Avatar alt={userData?.fullName} src={userData?.photoUrl} />
                             </IconButton>
                         </Tooltip>
@@ -108,6 +112,7 @@ function AppBarCompo({ userData }) {
                                 horizontal: 'right',
                             }}
                             open={userMenu}
+                            onClose={() => setUserMenu(false)}
                         >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} onClick={() => logoutFun()}>

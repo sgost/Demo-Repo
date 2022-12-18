@@ -26,15 +26,10 @@ import "./styles.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { reduxStateFun } from "../Functions/functions";
 import AlertCompo from "../Alert";
-import AppBarCompo from "../AppBar";
-import { setApiMock, setSearchSpiciesType, setAddItemModalOpen, setRemoveItemModalObj, setAlertObj, setEditDataObj } from "../../redux/counterSlice";
+import { setSearchSpiciesType, setAddItemModalOpen, setRemoveItemModalObj, setEditDataObj } from "../../redux/counterSlice";
 
 
 const Products = () => {
-  // Fetching UserData from sessionStorage
-  const userData =
-    typeof sessionStorage !== "undefined" &&
-    JSON.parse(sessionStorage.getItem("userData"));
 
   const mockRedux = useSelector((state) => state.counter);
   const dispatch = useDispatch();
@@ -48,16 +43,6 @@ const Products = () => {
     dispatch(setRemoveItemModalObj({ bool: true, selectedRow: row }));
   }
 
-  const removeItem = () => {
-    dispatch(setApiMock({ mockData: mockRedux.apiMock.filter((item) => item.id !== mockRedux.removeItemModalObj.selectedRow.id) }));
-    dispatch(setRemoveItemModalObj({ bool: false, selectedRow: {} }));
-    dispatch(setAlertObj({
-      alertOpen: true,
-      alertType: 'success',
-      alertMessage: 'Item Removed!'
-    }))
-  }
-
   const editDataFun = (row, index) => {
     dispatch(setEditDataObj({
       bool: true,
@@ -68,7 +53,6 @@ const Products = () => {
 
   return (
     <Fragment>
-      <AppBarCompo userData={userData} />
       <Container maxWidth="lg" sx={{ py: 10 }}>
         <Typography
           variant="h6"
@@ -157,7 +141,7 @@ const Products = () => {
       </Container>
       <AddItemModal />
       <EditItemModal />
-      <DeleteItemModal removeItem={() => removeItem()} />
+      <DeleteItemModal />
       {/* Alert modal */}
       <AlertCompo />
     </Fragment>
